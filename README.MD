@@ -1,0 +1,423 @@
+# How to make a simple Batch Script
+
+Backup on Github: [https://github.com/Abdulhadi5692HDI2-3/sbstut](https://github.com/Abdulhadi5692HDI2-3/sbstut/)
+!!! note Windows Only!
+    This is for Windows Only as this uses Batch Script.
+    If you're looking for **bash script** go here (broken link).
+
+
+Table of Contents:
+[TOC]
+
+## Introduction
+This is basically one of those Batch Script tutorials.
+This one will teach about basic stuff, arguments, functions and stuff.
+
+## Hello World!
+This is our starting point!
+``` batch
+@echo off
+echo Hello World!
+pause
+exit
+```
+
+If you run this script, it should look something like this:
+![Output](https://i.imgur.com/TFQQoA1.png)
+and you can press `space` or any other key to exit!
+
+Let me explain, line `1` makes  the command line invisible so it looks pretty.
+Line `2` uses `echo` to print `Hello World!` to the screen.
+Line `3` uses `pause` to wait for any key input
+Line `4` exits the script.
+
+## Changing the colors and title of the window!
+Let's modify the script a bit.
+
+``` batch
+@echo off
+title My Awesome Script
+color 0a
+echo Hello World!
+pause
+exit
+```
+
+If you run the script, the result should look something like this
+![Output](https://i.imgur.com/GerrhP9.png)
+
+The titlebar has changed to `"My Awesome Script"`
+And the color of the text has turned Green.
+
+Let's explain, Line `2` uses `title` to change the title of the window.
+Line `3` uses `color` to change the color to green, `0a` represents black background on green text (in hexadecimal)!
+The rest is the same.
+
+Pretty cool :)
+
+## Functions and variables
+Functions and variables are VERY VERY useful (especially in batch scripting).
+
+So once again, we modify the script
+``` batch
+@echo off
+set TITLE=My Awesome Script
+set TEXT=Hello World!
+set COLOR=0a
+
+goto :main
+
+:main
+title %TITLE%
+color %COLOR%
+echo %TEXT%
+pause
+exit
+```
+
+<insert lost image here>
+
+`set TITLE` sets the variable `TITLE` to `My Awesome Script`
+and for the other variables so on.
+
+`goto :main` just jumps to the function `main`
+
+`:main` declares a function.
+
+then `title`, `color` and `echo` use the variables using the format `%variablename%`.
+
+looks the same, just more lines of code.
+
+### Calling functions
+To call a function use `call`
+
+Like this:
+``` batch
+@echo off
+call :Init
+goto :Main
+
+:main
+title %TITLE%
+color %COLOR%
+echo %TEXT%
+pause
+exit
+
+:Init
+set TITLE=My Awesome Script
+set COLOR=0a
+set TEXT=Hello World!
+REM use the special eof function to end the function
+goto :eof
+```
+
+## Arguments!!!!!
+Arguments are somewhat useful and exciting!
+
+In Batch Script, arguments are stored in special variables (1 to 9)
+You can access the value of the arguments like this:
+``` batch
+REM Access argument 1
+echo %1
+```
+
+Time to modify the script again!
+
+``` batch
+@echo off
+goto :main
+
+:main
+title %1
+color %2
+echo %3
+```
+
+Running the script like this:
+`C:\users\username> helloworld.bat Script 0a Hello!`
+should make the following result:
+![Output](https://i.imgur.com/dUxVrvp.png)
+
+## Comments
+Comments help us to outline and explain pieces of code.
+In Batch Script there's 2 ways to make comments in code.
+``` batch
+REM this is a comment
+:: this is also a comment
+```
+`REM` and `::`, the differences?
+the first one may cause lag if used too much.
+
+## IF Statements
+IF statements are very very very very useful.
+
+Here's a example, (it should be self explanatory!):
+
+``` batch
+@echo off
+REM use %random%, a special variable that returns a random number
+set CODE=%random%
+set CODE2=%CODE%001
+if not %CODE%==%CODE2% (
+	echo not equal lol.
+)
+pause
+exit
+```
+
+The result should look like this:
+![Output](https://i.imgur.com/09z235C.png)
+
+## Files and Folders
+### Folders!!!
+To create a folder in batch script, you simply use the `mkdir` command.
+``` batch
+@echo off
+mkdir normal
+exit
+```
+To remove a folder, use `rd'
+``` batch
+@echo off
+rd /s /q normal
+exit
+```
+### Files!
+To make a file, use `echo`  to make a file using the `>` to redirect output to the file (overwriting the current contents)
+``` batch
+@echo off
+echo funni > file.txt
+exit
+```
+To append stuff to a file, use `echo` using the `>>` to redirect output to the file (appending the data)
+``` batch
+@echo off
+echo something >> file.txt
+exit
+```
+To delete a file, use `del`
+``` batch
+@echo off
+del taxes-2023.docx
+exit
+```
+To copy a file, use `copy`
+``` batch
+@echo off
+copy file.txt ..\file-diameter.txt
+exit
+```
+
+To print the contents of the file, use `type`
+``` batch
+@echo off
+type file.txt
+exit
+```
+
+To store a files contents in a variable, use the `<` operator
+``` batch
+@echo off
+REM note the '/p' switch.
+REM this WONT ask for input when reading from a file.
+set /p contents=<file.txt
+echo %contents%
+exit
+```
+
+#### Checking if a file exists!
+Using the `if` statements, it's possible.
+
+Check if a file exists:
+``` batch
+@echo off
+if exist file.txt echo exists!
+exit
+```
+
+Check if a file does not exist:
+``` batch
+@echo off
+if not exist sanity.txt echo file "sanity.txt" does not exist!
+exit
+```
+
+## User input
+User input allows someone to type stuff in.
+
+Here's a fresh example
+``` batch
+@echo off 
+set /p name=What's your name: 
+echo Hello %name%!
+pause
+exit
+```
+
+This makes use of the `/p` switch for the `SET` command.
+
+The result should look somewhat similar to this:
+![Output](https://i.imgur.com/xU0goqN.png)
+
+## "Arrays"
+Ok just kidding, arrays don't exist as a type, but can be implemented.
+
+Like this:
+``` batch
+@echo off
+set realarray[0]=real
+set realarray[1]=not
+set realarray[2]=.
+echo %realarray[1]% %realarray[0]% %realarray[2]%
+exit
+```
+
+### "Structures"
+Structures also don't exist, but you know the drill. (IMPLEMENT AND STUFF)
+
+Something like this looks similar:
+``` batch
+@echo off
+REM this is very unusable
+set realstruct[0].Number = %random%
+set realstruct[0].Name = random
+set realstruct[1].Invalid = %realstruct[0].Number%%random%
+
+REM who would even need this!
+echo Name = %realstruct[0].Name%
+echo Number = %realstruct[0].Number%
+echo Invalid bit = %realstruct[1].Invalid%
+```
+
+## `FOR` statement
+The `FOR` statement is mainly used for looping through values or used for
+parsing files.
+
+Example: using it to list files and number them:
+``` batch
+@echo off
+REM set the file count to 1
+SET count=1
+REM for every file listed from dir /b call :c1 and add to the count
+FOR /f "tokens=*" %%G IN ('dir /b') DO (call :c1 "%%G")
+GOTO :eof
+
+:c1
+ echo %count%:%1
+ set /a count+=1
+ GOTO :eof
+```
+
+The results should look like this:
+
+![Output](https://i.imgur.com/Di1IeCv.png)
+
+Cool right (not really)
+
+## Toast notifications from Batch Files
+This requires you to have Powershell and .NET installed on your system.
+
+Here's a example:
+``` batch
+@echo off
+REM set variables for easyness
+set title=Very cool title
+set text=Very cool text
+
+REM execute the command
+powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $notify = New-Object System.Windows.Forms.NotifyIcon; $notify.Icon = [System.Drawing.SystemIcons]::Information; $notify.Visible = $true; $notify.ShowBalloonTip(0, '%title%', '%text%', [System.Windows.Forms.ToolTipIcon]::None)}"
+```
+
+The result should look like this:
+
+![Output](https://i.imgur.com/wtBoRmo.png)
+
+Note that the application title will always be `Windows Powershell`.
+
+
+## Advanced/More cool things
+We know the basics now so let's make some cool stuff.
+
+## A very simple Password Generator
+
+``` batch
+@echo off
+title Password Generator
+
+:: output password value
+
+set "PASSW=0"
+
+:: random number
+set "OP=%random%"
+:: debug: title OP=%OP%
+
+set /A OP2=%OP% * %OP%
+:: debug: title OP=%OP% OP2=%OP2%
+echo %OP2%
+
+set "PASSW=%OP2%%random%%OP%"
+:: debug: title OP=%OP% OP2=%OP2% PASSW=%PASSW%
+
+:: debug: title OP=%OP% OP2=%OP2% PASSW=%PASSW% inPath=%temp%\in
+echo %PASSW% > %temp%\in
+
+:: debug: title OP=%OP% OP2=%OP2% PASSW=%PASSW% inPath=%temp%\in outPath=%temp%\out
+certutil -f -encode %temp%\in %temp%\out
+
+cls
+echo -----BEGIN PASSWORD-----
+type %temp%\out
+echo -----END PASSWORD-----
+echo.
+echo Press any key to exit. . 
+pause>nul
+exit
+```
+
+OK This is a big one!
+
+Let's go through it step by step.
+
+1. It initializes the variable `PASSW`
+2. It declares the variables `OP` and `OP2` and fills them with random numbers
+3. `PASSW` is set to `%OP%%random%%OP2`
+4. We write the `PASSW` variable out to `%temp%\in`
+5. We use `certutil` a program for making certificates to encode `%temp%\in` in base64
+6. The args `-f -encode` tells it to encode it and to force overwrite the `%temp%\out` file.
+7. We display the result by getting data from the `%temp%\out` file
+
+Ta-da!
+
+It should look something like this:
+![Output](https://i.imgur.com/9EifmYy.png)
+
+## Colors (multiple)
+In batch script, when we use the `color` command it changes the color of the entire screen.
+If you are `echo`ing ascii art to the screen and want to use colors. This would be very frustrating
+as your ascii art would have to be in one color only.
+
+In Windows 10, a new feature was introduced to `conhost.exe` (and then Microsoft Terminal in Windows 11)
+the terminal that the command prompt (`cmd.exe`) runs on.
+ANSI Color Sequences, which allowed multiple colors.
+This feature is meant for console programs (`.exe` files) but it also works in batch scripting. (since command prompt is a console
+program)
+
+The sequence are a special character followed by a `[<number>`. In CMD you can type the special character by typing `CTRL+[`.
+
+In CMD the special character looks like this `^[`.
+
+To make a display a red `Hello World!` in cmd (from teh command line).
+You could do this:
+`C:\Users\user20234> echo <special character>[31mHello World!<special character>[0m`
+
+It should look like this:
+```C:\users\000> echo ^[[31mHello World!^[[0m```
+%red%Hello World!%%
+
+![Output](https://media.discordapp.net/attachments/1191085271635210352/1191090240887197717/image.png?ex=65a42c3a&is=6591b73a&hm=43997c0be10d1168720e770d8a115eddb04c709de5d1ca0f8b8db7c605c81a90&=&format=webp&quality=lossless)
+
+The `<special character>[0m` resets the color or style
+
+For a list of color codes, look here: https://ss64.com/nt/syntax-ansi.html
